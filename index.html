@@ -24,10 +24,144 @@
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;600;800;900&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="css/styles.css">
+
+<!-- ===================== NEW: additions stylesheet (banner, support chat, meme upload, moderation, language switcher) ===================== -->
+<style>
+  /* ---------- Coming soon banner ---------- */
+  .chimp-soon-banner{
+    position:relative; z-index:60;
+    display:flex; align-items:center; justify-content:center; gap:14px;
+    flex-wrap:wrap; text-align:center;
+    padding:10px 44px 10px 16px;
+    background:linear-gradient(90deg,#173a2c,#0f2c22 60%,#173a2c);
+    border-bottom:1px solid rgba(120,255,180,.25);
+    font-family:"Manrope",sans-serif; font-size:13.5px; color:#d9ffe9;
+  }
+  .chimp-soon-banner strong{ color:#7bffb0; font-weight:700; }
+  .chimp-soon-close{
+    position:absolute; right:10px; top:50%; transform:translateY(-50%);
+    background:transparent; border:none; color:#9fe8bf; font-size:16px;
+    line-height:1; cursor:pointer; padding:6px 8px; border-radius:6px;
+  }
+  .chimp-soon-close:hover{ background:rgba(255,255,255,.08); }
+  .chimp-soon-banner.is-hidden{ display:none; }
+
+  /* ---------- Language switcher ---------- */
+  .lang-switcher{ position:relative; display:inline-flex; }
+  .lang-switcher-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    font-family:"Manrope",sans-serif; font-size:13px; font-weight:600;
+    color:inherit; background:rgba(255,255,255,.06);
+    border:1px solid rgba(255,255,255,.14); border-radius:8px;
+    padding:7px 11px; cursor:pointer;
+  }
+  .lang-switcher-btn:hover{ background:rgba(255,255,255,.12); }
+  .lang-switcher-btn svg{ width:16px; height:16px; }
+  .lang-switcher-panel{
+    position:absolute; top:calc(100% + 8px); right:0; z-index:80;
+    min-width:220px; background:#101512; border:1px solid rgba(255,255,255,.14);
+    border-radius:10px; padding:12px; box-shadow:0 12px 30px rgba(0,0,0,.4);
+  }
+  .lang-switcher-panel[hidden]{ display:none; }
+  .lang-switcher-note{
+    margin:8px 0 0; font-family:"Manrope",sans-serif; font-size:11px; color:#8a9a92;
+  }
+  /* tame Google's default widget chrome so it fits the theme */
+  #google_translate_element .goog-te-gadget{ font-family:"Manrope",sans-serif !important; font-size:12px !important; color:#cfe9db !important; }
+  #google_translate_element .goog-te-gadget-simple{
+    background:rgba(255,255,255,.05) !important; border:1px solid rgba(255,255,255,.16) !important;
+    border-radius:8px !important; padding:6px 8px !important; display:inline-block !important;
+  }
+  #google_translate_element .goog-te-gadget-simple span{ color:#cfe9db !important; }
+  #google_translate_element img{ vertical-align:middle; }
+  .goog-te-banner-frame{ display:none !important; }
+  body{ top:0 !important; }
+  .goog-te-gadget-icon{ display:none !important; }
+  .mobile-panel .lang-switcher{ display:block; width:100%; }
+  .mobile-panel .lang-switcher-btn{ width:100%; justify-content:center; }
+  .mobile-panel .lang-switcher-panel{ left:0; right:0; top:calc(100% + 6px); }
+
+  /* ---------- Support widget: chat input row ---------- */
+  .support-chat-log{ display:flex; flex-direction:column; gap:8px; }
+  .chat-bubble{
+    max-width:82%; padding:9px 12px; border-radius:12px; font-family:"Manrope",sans-serif;
+    font-size:13.5px; line-height:1.4;
+  }
+  .chat-bubble.bot{ align-self:flex-start; background:rgba(123,255,176,.12); color:#d9ffe9; border:1px solid rgba(123,255,176,.2); }
+  .chat-bubble.user{ align-self:flex-end; background:rgba(255,255,255,.08); color:#f1f5f2; }
+  .support-chat-input-row{ display:flex; gap:8px; padding:10px 14px; border-top:1px solid rgba(255,255,255,.08); }
+  .support-chat-input-row input{
+    flex:1; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
+    border-radius:8px; padding:9px 11px; color:#f1f5f2; font-family:"Manrope",sans-serif; font-size:13.5px;
+  }
+  .support-chat-input-row input:focus{ outline:2px solid #7bffb0; outline-offset:1px; }
+  .support-chat-input-row button{
+    background:#7bffb0; border:none; border-radius:8px; width:38px; height:38px;
+    font-size:15px; cursor:pointer; color:#0b2016;
+  }
+  .support-chat-input-row button:hover{ filter:brightness(1.08); }
+
+  /* ---------- Meme upload panel ---------- */
+  .meme-upload-panel{
+    margin-top:34px; padding:22px; border:1px solid rgba(255,255,255,.12);
+    border-radius:14px; background:rgba(255,255,255,.03); max-width:520px;
+  }
+  .meme-upload-panel h3{ margin:0 0 6px; font-family:"Unbounded",sans-serif; font-size:18px; }
+  .meme-upload-note{ margin:0 0 16px; font-family:"Manrope",sans-serif; font-size:13px; color:var(--muted-2,#9aa8a1); }
+  .meme-upload-row{ display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
+  .meme-file-name{ font-family:"Manrope",sans-serif; font-size:12.5px; color:var(--muted-2,#9aa8a1); }
+  .meme-upload-preview{ margin-bottom:14px; }
+  .meme-upload-preview img{ max-width:160px; max-height:160px; border-radius:10px; display:block; object-fit:cover; }
+  .meme-caption-input{
+    width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
+    border-radius:8px; padding:9px 11px; color:#f1f5f2; font-family:"Manrope",sans-serif;
+    font-size:13.5px; margin-bottom:14px; box-sizing:border-box;
+  }
+  .meme-upload-status{ margin:12px 0 0; font-family:"Manrope",sans-serif; font-size:13px; color:#7bffb0; min-height:16px; }
+  .meme-upload-status.is-error{ color:#ff8a8a; }
+  .meme-card.is-pending-note{ opacity:.6; }
+
+  /* ---------- Moderation modal ---------- */
+  .mod-open-link{ color:var(--muted-2,#7a8a82); text-decoration:underline; font-size:11.5px; }
+  .mod-overlay{
+    position:fixed; inset:0; z-index:200; background:rgba(6,10,8,.72);
+    display:flex; align-items:center; justify-content:center; padding:20px;
+  }
+  .mod-overlay[hidden]{ display:none; }
+  .mod-modal{
+    width:100%; max-width:480px; max-height:82vh; overflow-y:auto;
+    background:#0f1310; border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:20px;
+  }
+  .mod-modal-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
+  .mod-modal-head strong{ font-family:"Unbounded",sans-serif; font-size:16px; color:#f1f5f2; }
+  .mod-modal-head button{ background:none; border:none; color:#cfe9db; font-size:16px; cursor:pointer; }
+  #modLoginView p{ font-family:"Manrope",sans-serif; font-size:13.5px; color:#cfe9db; margin:0 0 12px; }
+  #modPasswordInput{
+    width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
+    border-radius:8px; padding:9px 11px; color:#f1f5f2; margin-bottom:10px; box-sizing:border-box;
+  }
+  .mod-error{ color:#ff8a8a; font-size:12.5px; margin-top:8px !important; }
+  .mod-queue-item{ display:flex; gap:12px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.08); }
+  .mod-queue-item img{ width:64px; height:64px; border-radius:8px; object-fit:cover; flex-shrink:0; }
+  .mod-queue-item .mod-item-body{ flex:1; min-width:0; }
+  .mod-queue-item .mod-item-cap{ font-family:"Manrope",sans-serif; font-size:13px; color:#f1f5f2; margin:0 0 4px; word-break:break-word; }
+  .mod-queue-item .mod-item-time{ font-family:"Manrope",sans-serif; font-size:11px; color:#7a8a82; margin:0 0 8px; }
+  .mod-item-actions{ display:flex; gap:8px; }
+  .mod-btn{ font-family:"Manrope",sans-serif; font-size:12px; font-weight:700; border-radius:6px; padding:6px 10px; cursor:pointer; border:none; }
+  .mod-btn.approve{ background:#7bffb0; color:#0b2016; }
+  .mod-btn.reject{ background:rgba(255,138,138,.18); color:#ff8a8a; border:1px solid rgba(255,138,138,.4); }
+  #modEmptyMsg{ font-family:"Manrope",sans-serif; font-size:13px; color:#7a8a82; text-align:center; padding:20px 0; }
+</style>
 </head>
 <body>
 
 <div class="canopy-noise" aria-hidden="true"></div>
+
+<!-- ===================== NEW: coming soon banner ===================== -->
+<div class="chimp-soon-banner" id="chimpSoonBanner">
+  <span><strong>$CHIMP token launch — coming soon.</strong> The contract address will be posted here and in Telegram only. Don't trust it anywhere else.</span>
+  <button type="button" class="chimp-soon-close" id="chimpSoonClose" aria-label="Dismiss banner">✕</button>
+</div>
 
 <header class="site-nav" id="siteNav">
   <div class="nav-inner">
@@ -48,6 +182,17 @@
       </button>
     </nav>
     <div class="nav-cta">
+      <!-- ===================== NEW: language switcher (100+ languages via Google Translate) ===================== -->
+      <div class="lang-switcher" id="langSwitcher">
+        <button type="button" class="lang-switcher-btn" id="langSwitcherBtn" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 4 6 4 9s-1.5 6.4-4 9c-2.5-2.6-4-6-4-9s1.5-6.4 4-9z"/></svg>
+          <span>Language</span>
+        </button>
+        <div class="lang-switcher-panel" id="langSwitcherPanel" hidden>
+          <div id="google_translate_element"></div>
+          <p class="lang-switcher-note">Powered by Google Translate · 100+ languages</p>
+        </div>
+      </div>
       <a href="https://t.me/chimpbuytld" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">Join Community</a>
       <a href="https://pump.fun/join/unlikesalmon140" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Buy $CHIMP</a>
     </div>
@@ -63,6 +208,8 @@
   <a href="#memes">Memes</a>
   <a href="#community">Community</a>
   <button type="button" id="supportMobileBtn">Support</button>
+  <!-- NEW: mobile language trigger reuses the same dropdown -->
+  <button type="button" id="langSwitcherMobileBtn">Language</button>
   <a href="https://pump.fun/join/unlikesalmon140" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Buy $CHIMP</a>
 </div>
 
@@ -255,7 +402,7 @@
       <h2 class="section-title">Community-made chaos</h2>
       <p class="section-lede">Official artwork to get things started — the best $CHIMP content will come from the community as it rolls in.</p>
 
-      <div class="meme-collage">
+      <div class="meme-collage" id="memeCollage">
         <figure class="meme-card">
           <div class="meme-thumb"><img src="assets/images/chimp-mascot.webp" width="1103" height="1100" loading="lazy" alt="Official CHIMP mascot artwork"></div>
           <figcaption>Official artwork</figcaption>
@@ -268,16 +415,28 @@
           <div class="meme-thumb"><img src="assets/images/meme-glitch.webp" width="1103" height="1100" loading="lazy" alt="CHIMP mascot, glitched colour edition"></div>
           <figcaption>Glitch mode</figcaption>
         </figure>
-        <figure class="meme-card">
-          <div class="meme-thumb placeholder">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4M7 9l5-5 5 5M4 20h16"/></svg>
-            Your meme here
-          </div>
-          <figcaption>Submit yours</figcaption>
-        </figure>
+        <!-- NEW: approved community submissions get injected here by JS -->
       </div>
+
+      <!-- ===================== NEW: working meme upload + review queue ===================== -->
+      <div class="meme-upload-panel" id="memeUploadPanel">
+        <h3>Submit your meme</h3>
+        <p class="meme-upload-note">Pick an image below. It goes into the review queue — once a moderator approves it, it shows up in the gallery above automatically.</p>
+        <div class="meme-upload-row">
+          <input type="file" id="memeFileInput" accept="image/png,image/jpeg,image/webp,image/gif" hidden>
+          <button type="button" class="btn btn-ghost btn-sm" id="memeChooseBtn">Choose image</button>
+          <span class="meme-file-name" id="memeFileName">No file chosen</span>
+        </div>
+        <div class="meme-upload-preview" id="memeUploadPreview" hidden>
+          <img id="memeUploadPreviewImg" alt="Preview of the meme you're about to submit">
+        </div>
+        <input type="text" id="memeCaption" class="meme-caption-input" placeholder="Caption (optional)" maxlength="60">
+        <button type="button" class="btn btn-primary btn-sm" id="memeSubmitBtn" disabled>Submit for review</button>
+        <p class="meme-upload-status" id="memeUploadStatus"></p>
+      </div>
+
       <div class="meme-cta">
-        <a href="https://t.me/chimpbuytld" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Submit your meme</a>
+        <a href="https://t.me/chimpbuytld" target="_blank" rel="noopener noreferrer" class="btn btn-ghost">Prefer Telegram? Share it there instead</a>
       </div>
     </div>
   </section>
@@ -339,12 +498,12 @@
 
     <div class="footer-bottom">
       <span>© 2026 $CHIMP. Not a real financial institution. Definitely a real chimp.</span>
-      <span>Made with 🍌 and no brains.</span>
+      <span>Made with 🍌 and no brains. · <a href="#moderate" id="modOpenLink" class="mod-open-link">Moderator</a></span>
     </div>
   </div>
 </footer>
 
-<!-- support widget (static FAQ — canned answers, not a real AI backend) -->
+<!-- support widget (auto-reply bot — canned answers matched by keyword, not a live person) -->
 <button class="support-fab" id="supportFab" type="button" aria-label="Open support">
   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 18h.01M9.5 9a2.5 2.5 0 0 1 5 0c0 1.5-2.5 2-2.5 4"/><circle cx="12" cy="12" r="9"/></svg>
 </button>
@@ -354,15 +513,356 @@
       <img src="assets/images/chimp-icon.webp" width="32" height="32" alt="">
       <div>
         <strong>Chimp Support</strong>
-        <span>Instant answers · no brains required</span>
+        <span>Auto-reply bot · no brains required</span>
       </div>
     </div>
     <button class="support-close" id="supportClose" type="button" aria-label="Close support">✕</button>
   </div>
-  <div class="support-body" id="supportBody"></div>
+  <div class="support-body" id="supportBody">
+    <div class="support-chat-log" id="supportChatLog"></div>
+  </div>
+  <!-- NEW: chat input so people can actually ask the bot something -->
+  <div class="support-chat-input-row" id="supportChatInputRow">
+    <input type="text" id="supportChatInput" placeholder="Ask CHIMP support…" autocomplete="off">
+    <button type="button" id="supportChatSend" aria-label="Send">➤</button>
+  </div>
   <div class="support-foot">Still stuck? Message us on <a href="https://t.me/chimpbuytld" target="_blank" rel="noopener noreferrer">Telegram</a>.</div>
 </div>
 
+<!-- ===================== NEW: moderator queue (client-side demo — see notes) ===================== -->
+<div class="mod-overlay" id="modOverlay" hidden>
+  <div class="mod-modal">
+    <div class="mod-modal-head">
+      <strong>Moderator panel</strong>
+      <button type="button" id="modCloseBtn" aria-label="Close moderator panel">✕</button>
+    </div>
+    <div id="modLoginView">
+      <p>Enter the moderator password to review pending meme submissions.</p>
+      <input type="password" id="modPasswordInput" placeholder="Password">
+      <button type="button" class="btn btn-primary btn-sm" id="modLoginBtn">Log in</button>
+      <p class="mod-error" id="modLoginError" hidden>Wrong password.</p>
+    </div>
+    <div id="modQueueView" hidden>
+      <div id="modQueueList"></div>
+      <p id="modEmptyMsg" hidden>No submissions waiting for review.</p>
+    </div>
+  </div>
+</div>
+
 <script src="js/main.js" defer></script>
+
+<!-- ===================== NEW: Google Translate loader (100+ languages) ===================== -->
+<script type="text/javascript">
+  function chimpGoogleTranslateInit() {
+    if (window.google && window.google.translate) {
+      new google.translate.TranslateElement({
+        pageLanguage: 'en',
+        autoDisplay: false,
+        layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+      }, 'google_translate_element');
+    }
+  }
+</script>
+<script src="https://translate.google.com/translate_a/element.js?cb=chimpGoogleTranslateInit" defer></script>
+
+<!-- ===================== NEW: banner, support bot, meme upload/moderation, language toggle logic ===================== -->
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+  /* ---------- 1. Coming soon banner ---------- */
+  (function () {
+    var banner = document.getElementById('chimpSoonBanner');
+    var closeBtn = document.getElementById('chimpSoonClose');
+    if (!banner || !closeBtn) return;
+    if (sessionStorage.getItem('chimpSoonBannerDismissed') === '1') {
+      banner.classList.add('is-hidden');
+    }
+    closeBtn.addEventListener('click', function () {
+      banner.classList.add('is-hidden');
+      sessionStorage.setItem('chimpSoonBannerDismissed', '1');
+    });
+  })();
+
+  /* ---------- 2. Language switcher toggle ---------- */
+  (function () {
+    var btn = document.getElementById('langSwitcherBtn');
+    var mobileBtn = document.getElementById('langSwitcherMobileBtn');
+    var panel = document.getElementById('langSwitcherPanel');
+    if (!panel) return;
+
+    function togglePanel(force) {
+      var show = typeof force === 'boolean' ? force : panel.hasAttribute('hidden');
+      if (show) {
+        panel.removeAttribute('hidden');
+        if (btn) btn.setAttribute('aria-expanded', 'true');
+      } else {
+        panel.setAttribute('hidden', '');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      }
+    }
+    if (btn) btn.addEventListener('click', function (e) { e.stopPropagation(); togglePanel(); });
+    if (mobileBtn) mobileBtn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      var mobilePanelEl = document.getElementById('mobilePanel');
+      if (mobilePanelEl) mobilePanelEl.classList.remove('is-open');
+      togglePanel(true);
+    });
+    document.addEventListener('click', function (e) {
+      if (!panel.hasAttribute('hidden') && !panel.contains(e.target) && e.target !== btn && e.target !== mobileBtn) {
+        togglePanel(false);
+      }
+    });
+  })();
+
+  /* ---------- 3. Support auto-reply bot ---------- */
+  (function () {
+    var log = document.getElementById('supportChatLog');
+    var input = document.getElementById('supportChatInput');
+    var sendBtn = document.getElementById('supportChatSend');
+    var fab = document.getElementById('supportFab');
+    if (!log || !input || !sendBtn) return;
+
+    var knowledgeBase = [
+      { keywords: ['hi', 'hello', 'hey', 'sup'], reply: "Hey — I'm the CHIMP auto-reply bot. Ask me about the contract address, how to buy, the roadmap, or anything else on the site." },
+      { keywords: ['contract', 'ca', 'address'], reply: "There's no contract address yet — it hasn't launched. The real one will only ever be posted on this site and in our official Telegram. Anything else claiming to be the $CHIMP CA is a scam." },
+      { keywords: ['buy', 'purchase', 'how to buy', 'where to buy'], reply: "Once $CHIMP launches, you'll be able to buy it via the \"Buy $CHIMP\" button, which links to pump.fun. There's no live trading yet — don't send funds anywhere claiming otherwise." },
+      { keywords: ['launch', 'when', 'date', 'live'], reply: "No fixed launch date — check the Roadmap section. Token launch is currently marked \"In progress.\" We'll announce it here and in Telegram, nowhere else." },
+      { keywords: ['safe', 'scam', 'rug', 'legit', 'trust'], reply: "$CHIMP is a meme coin with no intrinsic value, no utility, and no promise of returns — it's made for fun. Always verify links through this site and never trust DMs claiming to be the team." },
+      { keywords: ['roadmap', 'plan', 'next'], reply: "Short version: CHIMP was born, the site & community launched, and token launch is in progress. After that: meme contests and \"wherever the vibes take us.\" See the Roadmap section for the full timeline." },
+      { keywords: ['meme', 'submit', 'upload', 'gallery'], reply: "You can upload a meme directly in the Meme Gallery section — it goes into a review queue and appears in the gallery once approved. Prefer Telegram? There's a link for that too." },
+      { keywords: ['supply', 'tax', 'tokenomics', 'liquidity'], reply: "Network, total supply, tax, and liquidity are all TBA — nothing's been invented or finalized yet. Check the Token section; it updates the moment real numbers exist." },
+      { keywords: ['telegram', 'twitter', 'x', 'discord', 'social', 'community'], reply: "Official channels are Telegram and X — both linked in the Community section and the footer. Verify any other page claiming to be $CHIMP before trusting it." },
+      { keywords: ['who', 'what is', 'mascot', 'chimp is'], reply: "CHIMP is a confident cartoon chimpanzee in sunglasses who showed up one day and decided this was his coin. No whitepaper, no five-year plan — just vibes." },
+      { keywords: ['language', 'translate'], reply: "Use the \"Language\" button in the top nav — it translates the whole site into 100+ languages." }
+    ];
+
+    var greeted = false;
+
+    function addBubble(text, who) {
+      var bubble = document.createElement('div');
+      bubble.className = 'chat-bubble ' + who;
+      bubble.textContent = text;
+      log.appendChild(bubble);
+      log.scrollTop = log.scrollHeight;
+    }
+
+    function botReplyTo(userText) {
+      var lower = userText.toLowerCase();
+      var match = knowledgeBase.find(function (entry) {
+        return entry.keywords.some(function (kw) { return lower.indexOf(kw) !== -1; });
+      });
+      var reply = match ? match.reply : "Not sure about that one — ask in Telegram and someone from the team will help: t.me/chimpbuytld";
+      // slight delay so it reads like a reply, not an instant echo
+      setTimeout(function () { addBubble(reply, 'bot'); }, 350);
+    }
+
+    function handleSend() {
+      var text = input.value.trim();
+      if (!text) return;
+      addBubble(text, 'user');
+      input.value = '';
+      botReplyTo(text);
+    }
+
+    sendBtn.addEventListener('click', handleSend);
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') handleSend();
+    });
+
+    function greetOnce() {
+      if (greeted) return;
+      greeted = true;
+      addBubble("Hey! I'm the CHIMP auto-reply bot. Ask about the contract address, how to buy, the roadmap, or meme submissions.", 'bot');
+    }
+    if (fab) fab.addEventListener('click', greetOnce);
+  })();
+
+  /* ---------- 4. Meme upload + moderation queue (client-side demo, see note below) ----------
+     NOTE: this site is static with no server, so submissions are stored in this browser's
+     localStorage. That means a moderator can only see submissions made from the SAME browser
+     they were uploaded from. For real multi-visitor moderation, this needs a small backend
+     (a form endpoint + database) — happy to wire that up if/when you have one. */
+  (function () {
+    var STORAGE_KEY = 'chimpMemeSubmissions';
+    var MOD_PASSWORD = 'chimp123'; // demo-only password, visible in page source — not real security
+
+    var fileInput = document.getElementById('memeFileInput');
+    var chooseBtn = document.getElementById('memeChooseBtn');
+    var fileNameEl = document.getElementById('memeFileName');
+    var previewWrap = document.getElementById('memeUploadPreview');
+    var previewImg = document.getElementById('memeUploadPreviewImg');
+    var captionInput = document.getElementById('memeCaption');
+    var submitBtn = document.getElementById('memeSubmitBtn');
+    var statusEl = document.getElementById('memeUploadStatus');
+    var collage = document.getElementById('memeCollage');
+
+    var modOpenLink = document.getElementById('modOpenLink');
+    var modOverlay = document.getElementById('modOverlay');
+    var modCloseBtn = document.getElementById('modCloseBtn');
+    var modLoginView = document.getElementById('modLoginView');
+    var modQueueView = document.getElementById('modQueueView');
+    var modPasswordInput = document.getElementById('modPasswordInput');
+    var modLoginBtn = document.getElementById('modLoginBtn');
+    var modLoginError = document.getElementById('modLoginError');
+    var modQueueList = document.getElementById('modQueueList');
+    var modEmptyMsg = document.getElementById('modEmptyMsg');
+
+    if (!fileInput || !collage) return;
+
+    function getAll() {
+      try { return JSON.parse(localStorage.getItem(STORAGE_KEY)) || []; }
+      catch (e) { return []; }
+    }
+    function saveAll(list) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(list));
+    }
+
+    var pendingDataUrl = null;
+
+    chooseBtn.addEventListener('click', function () { fileInput.click(); });
+
+    fileInput.addEventListener('change', function () {
+      var file = fileInput.files && fileInput.files[0];
+      statusEl.textContent = '';
+      statusEl.classList.remove('is-error');
+      if (!file) return;
+
+      if (file.size > 3 * 1024 * 1024) {
+        statusEl.textContent = 'That image is over 3MB — try a smaller file.';
+        statusEl.classList.add('is-error');
+        fileInput.value = '';
+        submitBtn.disabled = true;
+        return;
+      }
+
+      fileNameEl.textContent = file.name;
+      var reader = new FileReader();
+      reader.onload = function (e) {
+        pendingDataUrl = e.target.result;
+        previewImg.src = pendingDataUrl;
+        previewWrap.hidden = false;
+        submitBtn.disabled = false;
+      };
+      reader.readAsDataURL(file);
+    });
+
+    submitBtn.addEventListener('click', function () {
+      if (!pendingDataUrl) return;
+      var list = getAll();
+      list.push({
+        id: 'meme_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7),
+        dataUrl: pendingDataUrl,
+        caption: captionInput.value.trim(),
+        status: 'pending',
+        ts: Date.now()
+      });
+      saveAll(list);
+
+      statusEl.textContent = 'Submitted! It\'ll appear in the gallery once a moderator approves it.';
+      statusEl.classList.remove('is-error');
+
+      // reset form
+      pendingDataUrl = null;
+      fileInput.value = '';
+      fileNameEl.textContent = 'No file chosen';
+      previewWrap.hidden = true;
+      captionInput.value = '';
+      submitBtn.disabled = true;
+    });
+
+    function renderApprovedGallery() {
+      var approved = getAll().filter(function (m) { return m.status === 'approved'; });
+      // remove any previously-injected community cards before re-rendering
+      collage.querySelectorAll('.meme-card[data-community="1"]').forEach(function (el) { el.remove(); });
+      approved.forEach(function (m) {
+        var fig = document.createElement('figure');
+        fig.className = 'meme-card';
+        fig.setAttribute('data-community', '1');
+        fig.innerHTML = '<div class="meme-thumb"><img src="' + m.dataUrl + '" alt="Community-submitted CHIMP meme" loading="lazy"></div>' +
+          '<figcaption>' + (m.caption ? escapeHtml(m.caption) : 'Community meme') + '</figcaption>';
+        collage.appendChild(fig);
+      });
+    }
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+    renderApprovedGallery();
+
+    /* ---- moderator panel ---- */
+    function openMod() {
+      modOverlay.hidden = false;
+      modLoginView.hidden = false;
+      modQueueView.hidden = true;
+      modPasswordInput.value = '';
+      modLoginError.hidden = true;
+    }
+    function closeMod() {
+      modOverlay.hidden = true;
+      if (location.hash === '#moderate') history.replaceState(null, '', location.pathname + location.search);
+    }
+    function renderQueue() {
+      var pending = getAll().filter(function (m) { return m.status === 'pending'; });
+      modQueueList.innerHTML = '';
+      modEmptyMsg.hidden = pending.length > 0;
+      pending.forEach(function (m) {
+        var row = document.createElement('div');
+        row.className = 'mod-queue-item';
+        row.innerHTML =
+          '<img src="' + m.dataUrl + '" alt="Pending submission">' +
+          '<div class="mod-item-body">' +
+            '<p class="mod-item-cap">' + (m.caption ? escapeHtml(m.caption) : '(no caption)') + '</p>' +
+            '<p class="mod-item-time">' + new Date(m.ts).toLocaleString() + '</p>' +
+            '<div class="mod-item-actions">' +
+              '<button type="button" class="mod-btn approve" data-id="' + m.id + '" data-action="approve">Approve</button>' +
+              '<button type="button" class="mod-btn reject" data-id="' + m.id + '" data-action="reject">Reject</button>' +
+            '</div>' +
+          '</div>';
+        modQueueList.appendChild(row);
+      });
+    }
+    if (modQueueList) {
+      modQueueList.addEventListener('click', function (e) {
+        var btn = e.target.closest('.mod-btn');
+        if (!btn) return;
+        var id = btn.getAttribute('data-id');
+        var action = btn.getAttribute('data-action');
+        var list = getAll();
+        if (action === 'reject') {
+          list = list.filter(function (m) { return m.id !== id; });
+        } else if (action === 'approve') {
+          list = list.map(function (m) { return m.id === id ? Object.assign({}, m, { status: 'approved' }) : m; });
+        }
+        saveAll(list);
+        renderQueue();
+        renderApprovedGallery();
+      });
+    }
+    if (modLoginBtn) {
+      modLoginBtn.addEventListener('click', function () {
+        if (modPasswordInput.value === MOD_PASSWORD) {
+          modLoginView.hidden = true;
+          modQueueView.hidden = false;
+          renderQueue();
+        } else {
+          modLoginError.hidden = false;
+        }
+      });
+    }
+    if (modPasswordInput) {
+      modPasswordInput.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') modLoginBtn.click();
+      });
+    }
+    if (modOpenLink) modOpenLink.addEventListener('click', function (e) { e.preventDefault(); openMod(); });
+    if (modCloseBtn) modCloseBtn.addEventListener('click', closeMod);
+    if (modOverlay) modOverlay.addEventListener('click', function (e) { if (e.target === modOverlay) closeMod(); });
+    if (location.hash === '#moderate') openMod();
+  })();
+
+});
+</script>
+
 </body>
 </html>

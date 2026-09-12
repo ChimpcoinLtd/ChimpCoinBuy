@@ -1,0 +1,2 @@
+User-agent: *
+Allow: /Sitemap: https://chimpcoinltd.github.io/ChimpCoinBuy/sitemap.xml

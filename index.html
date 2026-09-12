@@ -25,22 +25,87 @@
 
 <link rel="stylesheet" href="css/styles.css">
 
-<!-- ===================== NEW: additions stylesheet (banner, support chat, meme upload, moderation, language switcher) ===================== -->
+<!-- ===================== NEW: modern theme + additions stylesheet ===================== -->
 <style>
+  /* ================= MODERN THEME OVERRIDE =================
+     Re-maps the site's color variables to a dark indigo/violet + cyan
+     palette. This overrides the variables the base stylesheet reads from,
+     so anything already using var(--panel), var(--muted-2) etc. updates
+     automatically. Components that use hard-coded colors instead of
+     variables are re-styled explicitly below with !important — if
+     anything still shows the old green after this, it's a hard-coded
+     color in css/styles.css that isn't reachable from here; share that
+     file and it can be fixed at the source. */
+  :root{
+    --bg:#0A0A14; --background:#0A0A14; --body-bg:#0A0A14;
+    --panel:#13131F; --panel-2:#171728; --surface:#13131F;
+    --ink:#F3F3FA; --text:#F3F3FA; --fg:#F3F3FA; --heading:#F3F3FA;
+    --muted:#9CA3C0; --muted-2:#8388A6;
+    --line:rgba(255,255,255,.12); --border:rgba(255,255,255,.12);
+    --accent:#8B5CF6; --primary:#8B5CF6; --brand:#8B5CF6; --brand-2:#22D3EE;
+  }
+  html, body{ background:#0A0A14 !important; color:#F3F3FA; }
+  header.site-nav{ background:rgba(10,10,20,.82) !important; border-bottom:1px solid rgba(255,255,255,.08) !important; backdrop-filter:blur(10px); }
+  .mobile-panel{ background:#10101c !important; }
+  .brand-word, h1, h2, h3, h4, .section-title{ color:#F3F3FA !important; }
+  .brand-word span{ color:#8B5CF6 !important; }
+  .links a, .nav-support-btn{ color:#D6D8E8 !important; }
+  .links a:hover{ color:#22D3EE !important; }
+  .pill{ background:rgba(139,92,246,.14) !important; border:1px solid rgba(139,92,246,.35) !important; color:#E4E1FF !important; }
+  .pill .dot{ background:#22D3EE !important; }
+  .btn-primary{ background:linear-gradient(135deg,#8B5CF6,#6D28D9) !important; color:#fff !important; border:none !important; box-shadow:0 8px 24px rgba(139,92,246,.35) !important; }
+  .btn-primary:hover{ filter:brightness(1.08); }
+  .btn-ghost{ background:transparent !important; border:1px solid rgba(255,255,255,.22) !important; color:#F3F3FA !important; }
+  .btn-ghost:hover{ background:rgba(255,255,255,.08) !important; }
+  section[style*="var(--panel)"], .section-pad{ background:#0A0A14; }
+  #why, #roadmap, #community{ background:#101020 !important; }
+  .glow-orb{ background:radial-gradient(circle,rgba(139,92,246,.55),transparent 70%) !important; }
+  .stage-ring{ border-color:rgba(139,92,246,.3) !important; }
+  .stage-ring.ring2{ border-color:rgba(34,211,238,.25) !important; }
+  .spotlight-beam{ background:linear-gradient(180deg,rgba(139,92,246,.25),transparent) !important; }
+  .mascot-shine{ background:linear-gradient(120deg,transparent,rgba(255,255,255,.18),transparent) !important; }
+  .stage-chip{ background:rgba(19,19,31,.9) !important; border:1px solid rgba(255,255,255,.14) !important; color:#F3F3FA !important; }
+  .ticker-strip{ background:#101020 !important; border-top:1px solid rgba(255,255,255,.08) !important; border-bottom:1px solid rgba(255,255,255,.08) !important; }
+  .ticker-track span{ color:#8388A6 !important; }
+  .ticker-track b{ color:#8B5CF6 !important; }
+  .eyebrow-tag{ color:#22D3EE !important; }
+  .vine-node{ background:rgba(139,92,246,.14) !important; color:#8B5CF6 !important; border:1px solid rgba(139,92,246,.3) !important; }
+  .stat-card{ background:#13131F !important; border:1px solid rgba(255,255,255,.1) !important; }
+  .stat-card .num{ color:#8B5CF6 !important; }
+  .token-panel{ background:#13131F !important; border:1px solid rgba(255,255,255,.1) !important; }
+  .ticker-chip{ background:rgba(34,211,238,.12) !important; border:1px solid rgba(34,211,238,.35) !important; color:#22D3EE !important; }
+  .dotpulse{ background:#22D3EE !important; }
+  .contract-row{ background:rgba(255,255,255,.04) !important; border:1px solid rgba(255,255,255,.1) !important; }
+  .copy-btn{ background:#8B5CF6 !important; color:#fff !important; border:none !important; }
+  .token-field .v.tba{ color:#8388A6 !important; }
+  .bar-stop{ background:#13131F !important; border:1px solid rgba(255,255,255,.1) !important; }
+  .bar-stop.done{ border-color:rgba(34,211,238,.4) !important; }
+  .bar-hook{ color:#8B5CF6 !important; }
+  .bar-status{ color:#22D3EE !important; }
+  .meme-card{ background:#13131F !important; border:1px solid rgba(255,255,255,.1) !important; }
+  figcaption{ color:#9CA3C0 !important; }
+  .social-chip{ background:#13131F !important; border:1px solid rgba(255,255,255,.14) !important; color:#F3F3FA !important; }
+  .social-chip:hover{ border-color:#8B5CF6 !important; color:#8B5CF6 !important; }
+  .community-panel{ background:#13131F !important; border:1px solid rgba(255,255,255,.1) !important; }
+  footer{ background:#0A0A14 !important; border-top:1px solid rgba(255,255,255,.08) !important; }
+  .disclaimer{ color:#8388A6 !important; border-top:1px solid rgba(255,255,255,.08) !important; }
+  .support-fab{ background:linear-gradient(135deg,#8B5CF6,#6D28D9) !important; color:#fff !important; }
+  .support-panel{ background:#13131F !important; border:1px solid rgba(255,255,255,.14) !important; }
+  .support-head{ border-bottom:1px solid rgba(255,255,255,.1) !important; }
   /* ---------- Coming soon banner ---------- */
   .chimp-soon-banner{
     position:relative; z-index:60;
     display:flex; align-items:center; justify-content:center; gap:14px;
     flex-wrap:wrap; text-align:center;
     padding:10px 44px 10px 16px;
-    background:linear-gradient(90deg,#173a2c,#0f2c22 60%,#173a2c);
+    background:linear-gradient(90deg,#1b1442,#120c30 60%,#1b1442);
     border-bottom:1px solid rgba(120,255,180,.25);
-    font-family:"Manrope",sans-serif; font-size:13.5px; color:#d9ffe9;
+    font-family:"Manrope",sans-serif; font-size:13.5px; color:#E7F6FF;
   }
-  .chimp-soon-banner strong{ color:#7bffb0; font-weight:700; }
+  .chimp-soon-banner strong{ color:#22D3EE; font-weight:700; }
   .chimp-soon-close{
     position:absolute; right:10px; top:50%; transform:translateY(-50%);
-    background:transparent; border:none; color:#9fe8bf; font-size:16px;
+    background:transparent; border:none; color:#a8dcec; font-size:16px;
     line-height:1; cursor:pointer; padding:6px 8px; border-radius:6px;
   }
   .chimp-soon-close:hover{ background:rgba(255,255,255,.08); }
@@ -66,14 +131,16 @@
   .lang-switcher-note{
     margin:8px 0 0; font-family:"Manrope",sans-serif; font-size:11px; color:#8a9a92;
   }
-  /* tame Google's default widget chrome so it fits the theme */
-  #google_translate_element .goog-te-gadget{ font-family:"Manrope",sans-serif !important; font-size:12px !important; color:#cfe9db !important; }
-  #google_translate_element .goog-te-gadget-simple{
-    background:rgba(255,255,255,.05) !important; border:1px solid rgba(255,255,255,.16) !important;
-    border-radius:8px !important; padding:6px 8px !important; display:inline-block !important;
+  /* ---------- custom 10-language option list (this is what the user actually sees/clicks) ---------- */
+  .lang-option-list{ display:flex; flex-direction:column; gap:2px; max-height:280px; overflow-y:auto; }
+  .lang-option{
+    text-align:left; background:transparent; border:none; border-radius:7px;
+    padding:8px 9px; font-family:"Manrope",sans-serif; font-size:13.5px; color:#e7f3ec;
+    cursor:pointer;
   }
-  #google_translate_element .goog-te-gadget-simple span{ color:#cfe9db !important; }
-  #google_translate_element img{ vertical-align:middle; }
+  .lang-option:hover, .lang-option.is-active{ background:rgba(34,211,238,.16); color:#22D3EE; }
+  /* Google's own widget UI is never shown — it only exists to drive the translation engine */
+  .goog-hidden-host{ position:absolute; width:1px; height:1px; overflow:hidden; opacity:0; pointer-events:none; }
   .goog-te-banner-frame{ display:none !important; }
   body{ top:0 !important; }
   .goog-te-gadget-icon{ display:none !important; }
@@ -87,17 +154,17 @@
     max-width:82%; padding:9px 12px; border-radius:12px; font-family:"Manrope",sans-serif;
     font-size:13.5px; line-height:1.4;
   }
-  .chat-bubble.bot{ align-self:flex-start; background:rgba(123,255,176,.12); color:#d9ffe9; border:1px solid rgba(123,255,176,.2); }
+  .chat-bubble.bot{ align-self:flex-start; background:rgba(34,211,238,.14); color:#E7F6FF; border:1px solid rgba(34,211,238,.28); }
   .chat-bubble.user{ align-self:flex-end; background:rgba(255,255,255,.08); color:#f1f5f2; }
   .support-chat-input-row{ display:flex; gap:8px; padding:10px 14px; border-top:1px solid rgba(255,255,255,.08); }
   .support-chat-input-row input{
     flex:1; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
     border-radius:8px; padding:9px 11px; color:#f1f5f2; font-family:"Manrope",sans-serif; font-size:13.5px;
   }
-  .support-chat-input-row input:focus{ outline:2px solid #7bffb0; outline-offset:1px; }
+  .support-chat-input-row input:focus{ outline:2px solid #22D3EE; outline-offset:1px; }
   .support-chat-input-row button{
-    background:#7bffb0; border:none; border-radius:8px; width:38px; height:38px;
-    font-size:15px; cursor:pointer; color:#0b2016;
+    background:#22D3EE; border:none; border-radius:8px; width:38px; height:38px;
+    font-size:15px; cursor:pointer; color:#071019;
   }
   .support-chat-input-row button:hover{ filter:brightness(1.08); }
 
@@ -117,9 +184,50 @@
     border-radius:8px; padding:9px 11px; color:#f1f5f2; font-family:"Manrope",sans-serif;
     font-size:13.5px; margin-bottom:14px; box-sizing:border-box;
   }
-  .meme-upload-status{ margin:12px 0 0; font-family:"Manrope",sans-serif; font-size:13px; color:#7bffb0; min-height:16px; }
+  .meme-upload-status{ margin:12px 0 0; font-family:"Manrope",sans-serif; font-size:13px; color:#22D3EE; min-height:16px; }
   .meme-upload-status.is-error{ color:#ff8a8a; }
   .meme-card.is-pending-note{ opacity:.6; }
+
+  /* ---------- Coin claim panel ---------- */
+  .claim-panel{
+    background:#13131F; border:1px solid rgba(255,255,255,.1); border-radius:16px;
+    padding:28px; max-width:560px;
+  }
+  .claim-status-pill{
+    display:inline-flex; align-items:center; gap:7px; padding:5px 12px; border-radius:999px;
+    background:rgba(139,92,246,.14); border:1px solid rgba(139,92,246,.35); color:#c4b5fd;
+    font-family:"Manrope",sans-serif; font-size:12px; font-weight:700; margin-bottom:14px;
+  }
+  .claim-status-pill .dot{ width:6px; height:6px; border-radius:50%; background:#22D3EE; }
+  .claim-row{ display:flex; gap:10px; flex-wrap:wrap; margin:16px 0 10px; }
+  .claim-row input{
+    flex:1; min-width:220px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
+    border-radius:8px; padding:11px 12px; color:#F3F3FA; font-family:"Manrope",sans-serif; font-size:13.5px;
+  }
+  .claim-btn-disabled{
+    background:rgba(255,255,255,.08) !important; color:#8388A6 !important; cursor:not-allowed !important;
+    border:1px solid rgba(255,255,255,.1) !important;
+  }
+  .claim-note{ font-family:"Manrope",sans-serif; font-size:12.5px; color:#8388A6; margin:12px 0 0; line-height:1.5; }
+  .claim-note strong{ color:#c4b5fd; }
+  .claim-register-status{ font-family:"Manrope",sans-serif; font-size:13px; color:#22D3EE; min-height:16px; margin:10px 0 0; }
+
+  /* ---------- Community quick-link ---------- */
+  .copy-link-btn{
+    display:inline-flex; align-items:center; gap:6px;
+    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16);
+    color:#F3F3FA; border-radius:8px; padding:7px 11px; font-family:"Manrope",sans-serif;
+    font-size:13px; font-weight:600; cursor:pointer;
+  }
+  .copy-link-btn:hover{ background:rgba(255,255,255,.12); }
+  .copy-link-btn svg{ width:14px; height:14px; }
+  .copy-link-toast{
+    position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(12px);
+    background:#13131F; border:1px solid rgba(34,211,238,.4); color:#dbe6ff;
+    padding:10px 16px; border-radius:9px; font-family:"Manrope",sans-serif; font-size:13px;
+    opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; z-index:300;
+  }
+  .copy-link-toast.is-visible{ opacity:1; transform:translateX(-50%) translateY(0); }
 
   /* ---------- Moderation modal ---------- */
   .mod-open-link{ color:var(--muted-2,#7a8a82); text-decoration:underline; font-size:11.5px; }
@@ -134,8 +242,8 @@
   }
   .mod-modal-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
   .mod-modal-head strong{ font-family:"Unbounded",sans-serif; font-size:16px; color:#f1f5f2; }
-  .mod-modal-head button{ background:none; border:none; color:#cfe9db; font-size:16px; cursor:pointer; }
-  #modLoginView p{ font-family:"Manrope",sans-serif; font-size:13.5px; color:#cfe9db; margin:0 0 12px; }
+  .mod-modal-head button{ background:none; border:none; color:#dbe6ff; font-size:16px; cursor:pointer; }
+  #modLoginView p{ font-family:"Manrope",sans-serif; font-size:13.5px; color:#dbe6ff; margin:0 0 12px; }
   #modPasswordInput{
     width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
     border-radius:8px; padding:9px 11px; color:#f1f5f2; margin-bottom:10px; box-sizing:border-box;
@@ -148,7 +256,7 @@
   .mod-queue-item .mod-item-time{ font-family:"Manrope",sans-serif; font-size:11px; color:#7a8a82; margin:0 0 8px; }
   .mod-item-actions{ display:flex; gap:8px; }
   .mod-btn{ font-family:"Manrope",sans-serif; font-size:12px; font-weight:700; border-radius:6px; padding:6px 10px; cursor:pointer; border:none; }
-  .mod-btn.approve{ background:#7bffb0; color:#0b2016; }
+  .mod-btn.approve{ background:#22D3EE; color:#071019; }
   .mod-btn.reject{ background:rgba(255,138,138,.18); color:#ff8a8a; border:1px solid rgba(255,138,138,.4); }
   #modEmptyMsg{ font-family:"Manrope",sans-serif; font-size:13px; color:#7a8a82; text-align:center; padding:20px 0; }
 </style>
@@ -173,6 +281,7 @@
       <a href="#meet">Meet CHIMP</a>
       <a href="#why">Why CHIMP</a>
       <a href="#token">Token</a>
+      <a href="#claim">Claim</a>
       <a href="#roadmap">Roadmap</a>
       <a href="#memes">Memes</a>
       <a href="#community">Community</a>
@@ -189,10 +298,27 @@
           <span>Language</span>
         </button>
         <div class="lang-switcher-panel" id="langSwitcherPanel" hidden>
-          <div id="google_translate_element"></div>
-          <p class="lang-switcher-note">Powered by Google Translate · 100+ languages</p>
+          <div class="lang-option-list" id="langOptionList">
+            <button type="button" class="lang-option" data-lang="en">English</button>
+            <button type="button" class="lang-option" data-lang="zh-CN">中文 (Mandarin)</button>
+            <button type="button" class="lang-option" data-lang="hi">हिन्दी (Hindi)</button>
+            <button type="button" class="lang-option" data-lang="es">Español</button>
+            <button type="button" class="lang-option" data-lang="fr">Français</button>
+            <button type="button" class="lang-option" data-lang="ar">العربية (Arabic)</button>
+            <button type="button" class="lang-option" data-lang="bn">বাংলা (Bengali)</button>
+            <button type="button" class="lang-option" data-lang="pt">Português</button>
+            <button type="button" class="lang-option" data-lang="ru">Русский</button>
+            <button type="button" class="lang-option" data-lang="ja">日本語 (Japanese)</button>
+          </div>
+          <p class="lang-switcher-note">Top 10 most-spoken languages worldwide</p>
+          <!-- Google Translate does the actual translating; its own widget UI stays hidden — see .goog-hidden-host below -->
+          <div id="google_translate_element" class="goog-hidden-host"></div>
         </div>
       </div>
+      <button type="button" class="copy-link-btn" id="copyCommunityLinkBtn" title="Copy the community invite link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+        Get Community Link
+      </button>
       <a href="https://t.me/chimpbuytld" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">Join Community</a>
       <a href="https://pump.fun/join/unlikesalmon140" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Buy $CHIMP</a>
     </div>
@@ -204,10 +330,12 @@
   <a href="#meet">Meet CHIMP</a>
   <a href="#why">Why CHIMP</a>
   <a href="#token">Token</a>
+  <a href="#claim">Claim</a>
   <a href="#roadmap">Roadmap</a>
   <a href="#memes">Memes</a>
   <a href="#community">Community</a>
   <button type="button" id="supportMobileBtn">Support</button>
+  <button type="button" id="copyCommunityLinkMobileBtn">Get Community Link</button>
   <!-- NEW: mobile language trigger reuses the same dropdown -->
   <button type="button" id="langSwitcherMobileBtn">Language</button>
   <a href="https://pump.fun/join/unlikesalmon140" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Buy $CHIMP</a>
@@ -343,6 +471,30 @@
         </div>
 
         <p class="token-note">$CHIMP has no market cap, no holder count, and no exchange listings to report yet — none will be invented here. This section will be updated the moment any of it becomes real. $CHIMP is a meme coin with no intrinsic value or expectation of financial return. Nothing on this page is financial advice.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== NEW: coin claim ===================== -->
+  <section class="section-pad" id="claim">
+    <div class="wrap">
+      <div class="eyebrow-tag">Claim</div>
+      <h2 class="section-title">Claim your $CHIMP</h2>
+      <p class="section-lede" style="margin-bottom:28px;">Claiming isn't live — there's no token deployed yet. You can pre-register below so you know the moment it opens. No wallet connection, no signature, ever.</p>
+
+      <div class="claim-panel">
+        <span class="claim-status-pill"><span class="dot"></span> Claiming opens after token launch</span>
+
+        <div class="claim-row">
+          <input type="text" id="claimWalletInput" placeholder="Your wallet address (optional, for the pre-launch list)">
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button type="button" class="btn btn-primary btn-sm" id="claimRegisterBtn">Register for claim list</button>
+          <button type="button" class="btn btn-sm claim-btn-disabled" disabled title="Not live yet">Claim $CHIMP</button>
+        </div>
+        <p class="claim-register-status" id="claimRegisterStatus"></p>
+
+        <p class="claim-note"><strong>Heads up:</strong> $CHIMP will never DM you first, never ask you to connect a wallet or sign a transaction to "claim" or "register," and never charge a fee to release tokens. Any page or message doing that is not us — verify everything through this site and our official Telegram only.</p>
       </div>
     </div>
   </section>
@@ -557,6 +709,7 @@
     if (window.google && window.google.translate) {
       new google.translate.TranslateElement({
         pageLanguage: 'en',
+        includedLanguages: 'en,zh-CN,hi,es,fr,ar,bn,pt,ru,ja',
         autoDisplay: false,
         layout: google.translate.TranslateElement.InlineLayout.SIMPLE
       }, 'google_translate_element');
@@ -611,6 +764,29 @@ document.addEventListener('DOMContentLoaded', function () {
       if (!panel.hasAttribute('hidden') && !panel.contains(e.target) && e.target !== btn && e.target !== mobileBtn) {
         togglePanel(false);
       }
+    });
+
+    /* wire the 10 custom language buttons to the hidden Google Translate <select> */
+    var optionButtons = document.querySelectorAll('.lang-option');
+    function setLanguage(code) {
+      // Google injects a <select class="goog-te-combo"> inside #google_translate_element once it loads
+      var trySet = function (attemptsLeft) {
+        var select = document.querySelector('#google_translate_element select.goog-te-combo');
+        if (select) {
+          select.value = code;
+          select.dispatchEvent(new Event('change'));
+          optionButtons.forEach(function (b) { b.classList.toggle('is-active', b.getAttribute('data-lang') === code); });
+        } else if (attemptsLeft > 0) {
+          setTimeout(function () { trySet(attemptsLeft - 1); }, 300);
+        }
+      };
+      trySet(10);
+    }
+    optionButtons.forEach(function (b) {
+      b.addEventListener('click', function () {
+        setLanguage(b.getAttribute('data-lang'));
+        togglePanel(false);
+      });
     });
   })();
 
@@ -677,6 +853,54 @@ document.addEventListener('DOMContentLoaded', function () {
     if (fab) fab.addEventListener('click', greetOnce);
   })();
 
+  /* ---------- 4a. Coin claim pre-register (local only — no wallet connect, no signing, no funds) ---------- */
+  (function () {
+    var input = document.getElementById('claimWalletInput');
+    var btn = document.getElementById('claimRegisterBtn');
+    var status = document.getElementById('claimRegisterStatus');
+    if (!btn || !input || !status) return;
+    btn.addEventListener('click', function () {
+      var list = [];
+      try { list = JSON.parse(localStorage.getItem('chimpClaimRegistrations')) || []; } catch (e) {}
+      list.push({ wallet: input.value.trim(), ts: Date.now() });
+      localStorage.setItem('chimpClaimRegistrations', JSON.stringify(list));
+      status.textContent = "You're on the list. We'll never ask you to connect a wallet or sign anything before launch.";
+      input.value = '';
+    });
+  })();
+
+  /* ---------- 4b. Get Community Link: copy-to-clipboard + toast ---------- */
+  (function () {
+    var COMMUNITY_LINK = 'https://t.me/chimpbuytld';
+    var desktopBtn = document.getElementById('copyCommunityLinkBtn');
+    var mobileBtn = document.getElementById('copyCommunityLinkMobileBtn');
+
+    var toast = document.createElement('div');
+    toast.className = 'copy-link-toast';
+    toast.textContent = 'Community link copied: ' + COMMUNITY_LINK;
+    document.body.appendChild(toast);
+
+    function showToast() {
+      toast.classList.add('is-visible');
+      setTimeout(function () { toast.classList.remove('is-visible'); }, 2200);
+    }
+    function copyLink() {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(COMMUNITY_LINK).then(showToast).catch(function () {
+          window.open(COMMUNITY_LINK, '_blank', 'noopener');
+        });
+      } else {
+        window.open(COMMUNITY_LINK, '_blank', 'noopener');
+      }
+    }
+    if (desktopBtn) desktopBtn.addEventListener('click', copyLink);
+    if (mobileBtn) mobileBtn.addEventListener('click', function () {
+      var mobilePanelEl = document.getElementById('mobilePanel');
+      if (mobilePanelEl) mobilePanelEl.classList.remove('is-open');
+      copyLink();
+    });
+  })();
+
   /* ---------- 4. Meme upload + moderation queue (client-side demo, see note below) ----------
      NOTE: this site is static with no server, so submissions are stored in this browser's
      localStorage. That means a moderator can only see submissions made from the SAME browser
@@ -684,7 +908,7 @@ document.addEventListener('DOMContentLoaded', function () {
      (a form endpoint + database) — happy to wire that up if/when you have one. */
   (function () {
     var STORAGE_KEY = 'chimpMemeSubmissions';
-    var MOD_PASSWORD = 'chimp123'; // demo-only password, visible in page source — not real security
+    var MOD_PASSWORD = '4521'; // demo-only password, visible in page source — not real security
 
     var fileInput = document.getElementById('memeFileInput');
     var chooseBtn = document.getElementById('memeChooseBtn');

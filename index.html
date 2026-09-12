@@ -99,7 +99,7 @@
     flex-wrap:wrap; text-align:center;
     padding:10px 44px 10px 16px;
     background:linear-gradient(90deg,#1b1442,#120c30 60%,#1b1442);
-    border-bottom:1px solid rgba(120,255,180,.25);
+    border-bottom:1px solid rgba(139,92,246,.3);
     font-family:"Manrope",sans-serif; font-size:13.5px; color:#E7F6FF;
   }
   .chimp-soon-banner strong{ color:#22D3EE; font-weight:700; }
@@ -124,7 +124,7 @@
   .lang-switcher-btn svg{ width:16px; height:16px; }
   .lang-switcher-panel{
     position:absolute; top:calc(100% + 8px); right:0; z-index:80;
-    min-width:220px; background:#101512; border:1px solid rgba(255,255,255,.14);
+    min-width:220px; background:#13131F; border:1px solid rgba(255,255,255,.14);
     border-radius:10px; padding:12px; box-shadow:0 12px 30px rgba(0,0,0,.4);
   }
   .lang-switcher-panel[hidden]{ display:none; }
@@ -135,7 +135,7 @@
   .lang-option-list{ display:flex; flex-direction:column; gap:2px; max-height:280px; overflow-y:auto; }
   .lang-option{
     text-align:left; background:transparent; border:none; border-radius:7px;
-    padding:8px 9px; font-family:"Manrope",sans-serif; font-size:13.5px; color:#e7f3ec;
+    padding:8px 9px; font-family:"Manrope",sans-serif; font-size:13.5px; color:#F3F3FA;
     cursor:pointer;
   }
   .lang-option:hover, .lang-option.is-active{ background:rgba(34,211,238,.16); color:#22D3EE; }
@@ -155,11 +155,11 @@
     font-size:13.5px; line-height:1.4;
   }
   .chat-bubble.bot{ align-self:flex-start; background:rgba(34,211,238,.14); color:#E7F6FF; border:1px solid rgba(34,211,238,.28); }
-  .chat-bubble.user{ align-self:flex-end; background:rgba(255,255,255,.08); color:#f1f5f2; }
+  .chat-bubble.user{ align-self:flex-end; background:rgba(255,255,255,.08); color:#F3F3FA; }
   .support-chat-input-row{ display:flex; gap:8px; padding:10px 14px; border-top:1px solid rgba(255,255,255,.08); }
   .support-chat-input-row input{
     flex:1; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
-    border-radius:8px; padding:9px 11px; color:#f1f5f2; font-family:"Manrope",sans-serif; font-size:13.5px;
+    border-radius:8px; padding:9px 11px; color:#F3F3FA; font-family:"Manrope",sans-serif; font-size:13.5px;
   }
   .support-chat-input-row input:focus{ outline:2px solid #22D3EE; outline-offset:1px; }
   .support-chat-input-row button{
@@ -174,14 +174,14 @@
     border-radius:14px; background:rgba(255,255,255,.03); max-width:520px;
   }
   .meme-upload-panel h3{ margin:0 0 6px; font-family:"Unbounded",sans-serif; font-size:18px; }
-  .meme-upload-note{ margin:0 0 16px; font-family:"Manrope",sans-serif; font-size:13px; color:var(--muted-2,#9aa8a1); }
+  .meme-upload-note{ margin:0 0 16px; font-family:"Manrope",sans-serif; font-size:13px; color:var(--muted-2,#8388A6); }
   .meme-upload-row{ display:flex; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap; }
-  .meme-file-name{ font-family:"Manrope",sans-serif; font-size:12.5px; color:var(--muted-2,#9aa8a1); }
+  .meme-file-name{ font-family:"Manrope",sans-serif; font-size:12.5px; color:var(--muted-2,#8388A6); }
   .meme-upload-preview{ margin-bottom:14px; }
   .meme-upload-preview img{ max-width:160px; max-height:160px; border-radius:10px; display:block; object-fit:cover; }
   .meme-caption-input{
     width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
-    border-radius:8px; padding:9px 11px; color:#f1f5f2; font-family:"Manrope",sans-serif;
+    border-radius:8px; padding:9px 11px; color:#F3F3FA; font-family:"Manrope",sans-serif;
     font-size:13.5px; margin-bottom:14px; box-sizing:border-box;
   }
   .meme-upload-status{ margin:12px 0 0; font-family:"Manrope",sans-serif; font-size:13px; color:#22D3EE; min-height:16px; }
@@ -230,7 +230,7 @@
   .copy-link-toast.is-visible{ opacity:1; transform:translateX(-50%) translateY(0); }
 
   /* ---------- Moderation modal ---------- */
-  .mod-open-link{ color:var(--muted-2,#7a8a82); text-decoration:underline; font-size:11.5px; }
+  .mod-open-link{ color:var(--muted-2,#8388A6); text-decoration:underline; font-size:11.5px; }
   .mod-overlay{
     position:fixed; inset:0; z-index:200; background:rgba(6,10,8,.72);
     display:flex; align-items:center; justify-content:center; padding:20px;
@@ -238,27 +238,27 @@
   .mod-overlay[hidden]{ display:none; }
   .mod-modal{
     width:100%; max-width:480px; max-height:82vh; overflow-y:auto;
-    background:#0f1310; border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:20px;
+    background:#13131F; border:1px solid rgba(255,255,255,.14); border-radius:14px; padding:20px;
   }
   .mod-modal-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; }
-  .mod-modal-head strong{ font-family:"Unbounded",sans-serif; font-size:16px; color:#f1f5f2; }
+  .mod-modal-head strong{ font-family:"Unbounded",sans-serif; font-size:16px; color:#F3F3FA; }
   .mod-modal-head button{ background:none; border:none; color:#dbe6ff; font-size:16px; cursor:pointer; }
   #modLoginView p{ font-family:"Manrope",sans-serif; font-size:13.5px; color:#dbe6ff; margin:0 0 12px; }
   #modPasswordInput{
     width:100%; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.14);
-    border-radius:8px; padding:9px 11px; color:#f1f5f2; margin-bottom:10px; box-sizing:border-box;
+    border-radius:8px; padding:9px 11px; color:#F3F3FA; margin-bottom:10px; box-sizing:border-box;
   }
   .mod-error{ color:#ff8a8a; font-size:12.5px; margin-top:8px !important; }
   .mod-queue-item{ display:flex; gap:12px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.08); }
   .mod-queue-item img{ width:64px; height:64px; border-radius:8px; object-fit:cover; flex-shrink:0; }
   .mod-queue-item .mod-item-body{ flex:1; min-width:0; }
-  .mod-queue-item .mod-item-cap{ font-family:"Manrope",sans-serif; font-size:13px; color:#f1f5f2; margin:0 0 4px; word-break:break-word; }
-  .mod-queue-item .mod-item-time{ font-family:"Manrope",sans-serif; font-size:11px; color:#7a8a82; margin:0 0 8px; }
+  .mod-queue-item .mod-item-cap{ font-family:"Manrope",sans-serif; font-size:13px; color:#F3F3FA; margin:0 0 4px; word-break:break-word; }
+  .mod-queue-item .mod-item-time{ font-family:"Manrope",sans-serif; font-size:11px; color:#8388A6; margin:0 0 8px; }
   .mod-item-actions{ display:flex; gap:8px; }
   .mod-btn{ font-family:"Manrope",sans-serif; font-size:12px; font-weight:700; border-radius:6px; padding:6px 10px; cursor:pointer; border:none; }
   .mod-btn.approve{ background:#22D3EE; color:#071019; }
   .mod-btn.reject{ background:rgba(255,138,138,.18); color:#ff8a8a; border:1px solid rgba(255,138,138,.4); }
-  #modEmptyMsg{ font-family:"Manrope",sans-serif; font-size:13px; color:#7a8a82; text-align:center; padding:20px 0; }
+  #modEmptyMsg{ font-family:"Manrope",sans-serif; font-size:13px; color:#8388A6; text-align:center; padding:20px 0; }
 </style>
 </head>
 <body>

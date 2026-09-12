@@ -212,22 +212,6 @@
   .claim-note strong{ color:#c4b5fd; }
   .claim-register-status{ font-family:"Manrope",sans-serif; font-size:13px; color:#22D3EE; min-height:16px; margin:10px 0 0; }
 
-  /* ---------- Community quick-link ---------- */
-  .copy-link-btn{
-    display:inline-flex; align-items:center; gap:6px;
-    background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.16);
-    color:#F3F3FA; border-radius:8px; padding:7px 11px; font-family:"Manrope",sans-serif;
-    font-size:13px; font-weight:600; cursor:pointer;
-  }
-  .copy-link-btn:hover{ background:rgba(255,255,255,.12); }
-  .copy-link-btn svg{ width:14px; height:14px; }
-  .copy-link-toast{
-    position:fixed; bottom:26px; left:50%; transform:translateX(-50%) translateY(12px);
-    background:#13131F; border:1px solid rgba(34,211,238,.4); color:#dbe6ff;
-    padding:10px 16px; border-radius:9px; font-family:"Manrope",sans-serif; font-size:13px;
-    opacity:0; pointer-events:none; transition:opacity .2s ease, transform .2s ease; z-index:300;
-  }
-  .copy-link-toast.is-visible{ opacity:1; transform:translateX(-50%) translateY(0); }
 
   /* ---------- Moderation modal ---------- */
   .mod-open-link{ color:var(--muted-2,#8388A6); text-decoration:underline; font-size:11.5px; }
@@ -315,10 +299,6 @@
           <div id="google_translate_element" class="goog-hidden-host"></div>
         </div>
       </div>
-      <button type="button" class="copy-link-btn" id="copyCommunityLinkBtn" title="Copy the community invite link">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="12" height="12" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
-        Get Community Link
-      </button>
       <a href="https://t.me/chimpbuytld" target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-sm">Join Community</a>
       <a href="https://pump.fun/join/unlikesalmon140" target="_blank" rel="noopener noreferrer" class="btn btn-primary btn-sm">Buy $CHIMP</a>
     </div>
@@ -335,7 +315,6 @@
   <a href="#memes">Memes</a>
   <a href="#community">Community</a>
   <button type="button" id="supportMobileBtn">Support</button>
-  <button type="button" id="copyCommunityLinkMobileBtn">Get Community Link</button>
   <!-- NEW: mobile language trigger reuses the same dropdown -->
   <button type="button" id="langSwitcherMobileBtn">Language</button>
   <a href="https://pump.fun/join/unlikesalmon140" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Buy $CHIMP</a>
@@ -866,38 +845,6 @@ document.addEventListener('DOMContentLoaded', function () {
       localStorage.setItem('chimpClaimRegistrations', JSON.stringify(list));
       status.textContent = "You're on the list. We'll never ask you to connect a wallet or sign anything before launch.";
       input.value = '';
-    });
-  })();
-
-  /* ---------- 4b. Get Community Link: copy-to-clipboard + toast ---------- */
-  (function () {
-    var COMMUNITY_LINK = 'https://t.me/chimpbuytld';
-    var desktopBtn = document.getElementById('copyCommunityLinkBtn');
-    var mobileBtn = document.getElementById('copyCommunityLinkMobileBtn');
-
-    var toast = document.createElement('div');
-    toast.className = 'copy-link-toast';
-    toast.textContent = 'Community link copied: ' + COMMUNITY_LINK;
-    document.body.appendChild(toast);
-
-    function showToast() {
-      toast.classList.add('is-visible');
-      setTimeout(function () { toast.classList.remove('is-visible'); }, 2200);
-    }
-    function copyLink() {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(COMMUNITY_LINK).then(showToast).catch(function () {
-          window.open(COMMUNITY_LINK, '_blank', 'noopener');
-        });
-      } else {
-        window.open(COMMUNITY_LINK, '_blank', 'noopener');
-      }
-    }
-    if (desktopBtn) desktopBtn.addEventListener('click', copyLink);
-    if (mobileBtn) mobileBtn.addEventListener('click', function () {
-      var mobilePanelEl = document.getElementById('mobilePanel');
-      if (mobilePanelEl) mobilePanelEl.classList.remove('is-open');
-      copyLink();
     });
   })();
 
